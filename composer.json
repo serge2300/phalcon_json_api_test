@@ -1,0 +1,14 @@
+{
+    "name": "phalcon/apitest",
+    "description": "Phalcon API Test",
+    "require": {
+        "ext-phalcon": "^3.0",
+        "phalcon/devtools": "^3.0"
+    },
+    "authors": [
+        {
+            "name": "Serge",
+            "email": "s.shemshuchenko@gmail.com"
+        }
+    ]
+}
