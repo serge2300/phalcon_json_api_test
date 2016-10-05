@@ -1,12 +1,7 @@
 <?php
 
 use Phalcon\Mvc\View;
-use Phalcon\Mvc\View\Engine\Php as PhpEngine;
-use Phalcon\Mvc\Url as UrlResolver;
-use Phalcon\Mvc\View\Engine\Volt as VoltEngine;
-use Phalcon\Mvc\Model\Metadata\Memory as MetaDataAdapter;
-use Phalcon\Session\Adapter\Files as SessionAdapter;
-use Phalcon\Flash\Direct as Flash;
+use Phalcon\Mvc\Dispatcher;
 
 /**
  * Shared configuration service
@@ -16,43 +11,22 @@ $di->setShared('config', function () {
 });
 
 /**
- * The URL component is used to generate all kind of urls in the application
+ * Register a dispatcher
  */
-$di->setShared('url', function () {
-    $config = $this->getConfig();
+$di->set('dispatcher', function () {
+    $dispatcher = new Dispatcher();
 
-    $url = new UrlResolver();
-    $url->setBaseUri($config->application->baseUri);
+    $dispatcher->setDefaultNamespace("Api\\Controllers");
 
-    return $url;
+    return $dispatcher;
 });
 
 /**
  * Setting up the view component
  */
 $di->setShared('view', function () {
-    $config = $this->getConfig();
-
     $view = new View();
-    $view->setDI($this);
-    $view->setViewsDir($config->application->viewsDir);
-
-    $view->registerEngines([
-        '.volt' => function ($view) {
-            $config = $this->getConfig();
-
-            $volt = new VoltEngine($view, $this);
-
-            $volt->setOptions([
-                'compiledPath' => $config->application->cacheDir,
-                'compiledSeparator' => '_'
-            ]);
-
-            return $volt;
-        },
-        '.phtml' => PhpEngine::class
-
-    ]);
+    $view->disable();
 
     return $view;
 });
@@ -75,32 +49,12 @@ $di->setShared('db', function () {
     return $connection;
 });
 
-
 /**
- * If the configuration specify the use of metadata adapter use it or use memory otherwise
+ * Routing
  */
-$di->setShared('modelsMetadata', function () {
-    return new MetaDataAdapter();
-});
-
-/**
- * Register the session flash service with the Twitter Bootstrap classes
- */
-$di->set('flash', function () {
-    return new Flash([
-        'error'   => 'alert alert-danger',
-        'success' => 'alert alert-success',
-        'notice'  => 'alert alert-info',
-        'warning' => 'alert alert-warning'
-    ]);
-});
-
-/**
- * Start the session the first time some component request the session service
- */
-$di->setShared('session', function () {
-    $session = new SessionAdapter();
-    $session->start();
-
-    return $session;
-});
+$di->set(
+    'router',
+    function () {
+        return include APP_PATH . "/config/routes.php";
+    }
+);

@@ -2,7 +2,6 @@
 
 class Robots extends \Phalcon\Mvc\Model
 {
-
     /**
      *
      * @var integer
@@ -72,5 +71,4 @@ class Robots extends \Phalcon\Mvc\Model
     {
         return parent::findFirst($parameters);
     }
-
 }

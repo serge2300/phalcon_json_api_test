@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 php composer.phar install
-phalcon migration run
+./vendor/bin/phalcon.php migration run
