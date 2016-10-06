@@ -5,14 +5,14 @@ namespace Api\Controllers;
 class RobotsController extends \ControllerBase
 {
     /**
-     * @var string Success message
+     * Success message
      */
-    protected $success = 'Success';
+    const SUCCESS = 'Success';
 
     /**
-     * @var string Error message
+     * Error message
      */
-    protected $error = 'Error! Check your data';
+    const ERROR = 'Error! Check your data';
 
     /**
      * Handle a request
@@ -33,13 +33,13 @@ class RobotsController extends \ControllerBase
 
             if ($response === true) {
                 // Show success message
-                $responseContent = $this->success;
+                $responseContent = self::SUCCESS;
             } else {
                 // Show data
                 $responseContent = $response;
             }
         } catch (\Exception $e) {
-            $responseContent = $this->error;
+            $responseContent = self::ERROR;
         }
 
         return $this->response->setJsonContent($responseContent);

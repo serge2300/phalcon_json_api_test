@@ -37,5 +37,5 @@ try {
     echo $application->handle()->getContent();
 
 } catch (\Exception $e) {
-    echo 'Error! Check your data';
+    echo \Api\Controllers\RobotsController::ERROR;
 }
