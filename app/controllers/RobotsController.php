@@ -6,6 +6,11 @@ use Robots;
 
 class RobotsController extends \ControllerBase
 {
+    public function initialize()
+    {
+        parent::initialize();
+    }
+
     public function allAction()
     {
         $robots = Robots::find()->toArray();
@@ -29,18 +34,14 @@ class RobotsController extends \ControllerBase
 
     public function createAction()
     {
-        $data = (array) $this->request->getJsonRawBody();
-
         $robot = new Robots();
-        $robot->save($data);
+        $robot->save($this->requestData);
     }
 
     public function updateAction()
     {
-        $data = (array) $this->request->getJsonRawBody();
-
-        $robot = Robots::findFirst($data['id']);
-        $robot->save($data);
+        $robot = Robots::findFirst($this->requestData['id']);
+        $robot->save($this->requestData);
     }
 
     public function deleteAction($id)
