@@ -9,28 +9,28 @@ $router = new Router();
 $router->removeExtraSlashes(true);
 
 // Create API group
-$api = new RouterGroup(["controller" => "robots"]);
+$api = new RouterGroup(['controller' => 'robots', 'action' => 'handle']);
 
 // All the routes start with /api/robots
 $api->setPrefix("/api/robots");
 
 // Get all robots
-$api->addGet('', ["action" => "all"]);
+$api->addGet('', ['params' => 'all']);
 
 // Search for a robot
-$api->addGet('/search/{name:[A-Za-z0-9]+}', ["action" => "search"]);
+$api->addGet('/search/{name:[A-Za-z0-9]+}', ['params' => 'search']);
 
 // Get one robot by ID
-$api->addGet('/{id:[0-9]+}', ["action" => "get"]);
+$api->addGet('/{id:[0-9]+}', ['params' => 'get']);
 
 // Create a new robot
-$api->addPost('', ["action" => "create"]);
+$api->addPost('', ['params' => 'create']);
 
 // Update a robot
-$api->addPut('', ["action" => "update"]);
+$api->addPut('', ['params' => 'update']);
 
 // Delete a robot
-$api->addDelete('/{id:[0-9]+}', ["action" => "delete"]);
+$api->addDelete('/{id:[0-9]+}', ['params' => 'delete']);
 
 // Add the group to the router
 $router->mount($api);

@@ -2,52 +2,47 @@
 
 namespace Api\Controllers;
 
-use Robots;
-
 class RobotsController extends \ControllerBase
 {
-    public function initialize()
+    /**
+     * @var string Success message
+     */
+    protected $success = 'Success';
+
+    /**
+     * @var string Error message
+     */
+    protected $error = 'Error! Check your data';
+
+    /**
+     * Handle a request
+     *
+     * @return \Phalcon\Http\Response|\Phalcon\Http\ResponseInterface
+     */
+    public function handleAction()
     {
-        parent::initialize();
-    }
+        try {
+            // Get all parameters
+            $params = $this->router->getParams();
+            // Get the endpoint parameter
+            $endpoint = ucfirst($params[0]);
+            unset($params[0]);
 
-    public function allAction()
-    {
-        $robots = Robots::find()->toArray();
+            // Call an endpoint
+            $response = call_user_func_array(['Api\\Controllers\\Endpoints\\' . $endpoint . 'Controller', 'index'], [$params]);
 
-        return $this->response->setJsonContent($robots);
-    }
+            if ($response === true) {
+                // Show success message
+                $responseContent = $this->success;
+            } else {
+                // Show data
+                $responseContent = $response;
+            }
+        } catch (\Exception $e) {
+            $responseContent = $this->error;
+        }
 
-    public function searchAction($name)
-    {
-        $robots = Robots::find(["name LIKE '%$name%'"]);
-
-        return $this->response->setJsonContent($robots);
-    }
-
-    public function getAction($id)
-    {
-        $robot = Robots::findFirst($id);
-
-        return $this->response->setJsonContent($robot);
-    }
-
-    public function createAction()
-    {
-        $robot = new Robots();
-        $robot->save($this->requestData);
-    }
-
-    public function updateAction()
-    {
-        $robot = Robots::findFirst($this->requestData['id']);
-        $robot->save($this->requestData);
-    }
-
-    public function deleteAction($id)
-    {
-        $robot = Robots::findFirst($id);
-        $robot->delete();
+        return $this->response->setJsonContent($responseContent);
     }
 }
 

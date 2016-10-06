@@ -7,10 +7,10 @@ class ControllerBase extends Controller
     /**
      * @var array Data from the request
      */
-    protected $requestData = [];
+    protected static $requestData = [];
 
     public function initialize()
     {
-        $this->requestData = (array) $this->request->getJsonRawBody();
+        self::$requestData = (array) $this->request->getJsonRawBody();
     }
 }
