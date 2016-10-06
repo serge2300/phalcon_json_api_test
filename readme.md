@@ -8,8 +8,8 @@
 ## Installation
 
 - clone this repository
-- navigate to project root and run `sh build.sh` in a console. This will install composer dependencies and perform database migrations
 - edit app/config/config.php file and enter your database credentials
+- navigate to project root and run `sh build.sh` in a console. This will install composer dependencies and perform database migrations
 - set up your local server to point to **project root/public**
 
 ## API
